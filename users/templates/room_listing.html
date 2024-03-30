@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}Flip Coin{% endblock 'title' %}
+{% block 'content' %}
+<div class="container text-center">
+    <div class="row">
+{% for sala, image in images_rooms %}
+      <div class="col-5">       
+        <div class="card item-list bg-warning-subtle bg-gradient">
+            <div class="card-body">
+                <h4 class="title">{{sala.nome_sala}}</h4>
+                <div class="valor">
+                    <strong>Valor: R${{sala.valor_sala}}</strong>
+                </div>
+                {% if user.saldo >= sala.valor_sala%}
+                    <div class="unlocked text-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
+                            <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2"/>
+                        </svg> Unlocked
+                    </div>
+                {% else %}
+                    <div class="locked text-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                        </svg> Locked
+                    </div>
+                {% endif %}
+                <br>
+                <button type="button" class="btn btn-primary" {% if user.saldo < sala.valor_sala %}disabled{% endif %}>Entrar</button>
+                <div class="image-card">
+                    <img src="{% static image %}" width="15%" alt="">
+                </div>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock 'content' %}

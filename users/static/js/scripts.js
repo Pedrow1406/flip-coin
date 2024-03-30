@@ -8,6 +8,9 @@ form_login.addEventListener('submit', (event) => {
     postForm({username: username.value})
 });
 async function postForm(data){
+    for (const key in data) {
+        localStorage.setItem(key, data[key])
+        }
     data_json = JSON.stringify(data)
     try{
         const response = await fetch('/users/login/', {
@@ -18,8 +21,10 @@ async function postForm(data){
             },
             body: data_json
         });
-        const json = await response.json()
-        console.log(json)
+            const json = await response.json()
+            console.log(json)
+            window.location.href = json.url
+            
     } catch(error){
         console.log(error);
     }
