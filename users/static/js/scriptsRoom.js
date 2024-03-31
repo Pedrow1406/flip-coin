@@ -28,7 +28,7 @@ async function getData(){
     return  valorSala_saldoUser
 };
 
-
+var win = false;
 tailBtn.addEventListener("click",  async () => {
 const values =  await getData()
     console.log(values.user_balance);
@@ -42,6 +42,7 @@ const values =  await getData()
                 coin.style.animation = "spin-tails 3s forwards";
             }, 100);
             var resultado = values.user_balance + values.room_value;
+            var win = true;
         }
         else {
             setTimeout(function () {
@@ -53,8 +54,9 @@ const values =  await getData()
         setTimeout(() => {
             updateStats(resultado)
         }, 3000);
-        disableButton();
+        disableButton(win);
     }else{
+        insufficientFunds()
         returnButton() 
     };
 });
@@ -71,6 +73,7 @@ headBtn.addEventListener("click", async () => {
                 }, 100);
                 
                 var resultado = values.user_balance + values.room_value;
+                var win = true;
             }
             else {
                 setTimeout(function () {
@@ -82,9 +85,10 @@ headBtn.addEventListener("click", async () => {
             setTimeout(() => {
                 updateStats(resultado)
             }, 3000);
-            disableButton();
+            disableButton(win);
         } else{
-           returnButton() 
+            insufficientFunds()
+            returnButton() 
         };
 });
 
@@ -93,7 +97,7 @@ function updateStats(valor_alterado) {
     saldo.textContent = `Saldo: R$${valor_alterado}`;
 };
 
-function disableButton() {
+function disableButton(win) {
     tailBtn.disabled = true;
     headBtn.disabled = true;
     setTimeout(() => {
@@ -101,19 +105,57 @@ function disableButton() {
         headBtn.style.display = 'none';
         tailBtn.disabled = false;
         headBtn.disabled = false;
-        createButtons()
+        createButtons(win)
     }, 3000);
 };
 
 
-function createButtons(){
-    const tryAgainBtn = tryButton()
-    const returnBtn = returnButton()
+function winMessage(){
+    const $result = document.createElement('div');
+    $result.classList.add('result');
+    $result.classList.add('text-center');
+    $result.classList.add('text-success');
+    $result.classList.add('fs-2');
+    $result.textContent = 'Win';
+    coin.insertAdjacentElement('beforebegin',$result);
+    return $result
+};
+
+function loseMessage(){
+    const $result = document.createElement('div');
+    $result.classList.add('result');
+    $result.classList.add('text-center');
+    $result.classList.add('text-danger');
+    $result.classList.add('fs-2');
+    $result.textContent = 'Lose';
+    coin.insertAdjacentElement('beforebegin',$result);
+    return $result
+};
+
+function insufficientFunds(){
+    const $insufFunds = document.createElement('div');
+    $insufFunds.classList.add('text-center');
+    $insufFunds.classList.add('text-danger');
+    $insufFunds.classList.add('fs-5');
+    $insufFunds.textContent = 'Saldo Insuficiente!';
+    button_container.insertAdjacentElement('beforebegin', $insufFunds);
+    return $insufFunds
+}
+
+function createButtons(win){
+    const tryAgainBtn = tryButton();
+    const returnBtn = returnButton();
+    if (win){
+        var $result = winMessage();
+    } else{
+        var $result = loseMessage();
+    }
     tryAgainBtn.addEventListener('click', () => {
         tailBtn.style.display = 'block';
         headBtn.style.display = 'block';
-        tryAgainBtn.remove()
-        returnBtn.remove()
+        tryAgainBtn.remove();
+        returnBtn.remove();
+        $result.remove();
     });
 };
 function tryButton(){

@@ -13,6 +13,7 @@ body {
 }
 
 .container {
+  position: relative;
   background-color: #ffffff;
   width: 400px;
   padding: 35px;
@@ -96,4 +97,10 @@ button {
 #reset-button {
   background-color: #d39210;
   color: white;
+}
+.result{
+  position: absolute;
+  top:0;
+  right: 50%;
+  transform: translate(50%, 50%)
 }

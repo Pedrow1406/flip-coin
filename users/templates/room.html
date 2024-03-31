@@ -5,7 +5,6 @@
 {% endblock 'head' %}
 {% block 'content' %}
 <div class="container">
-    
     <div class="coin" id="coin">
         <div class="heads">
             <img src="{% static "img/Coin-Head.png" %}">
@@ -19,6 +18,7 @@
         <h2 id='nome-sala'>{{sala.nome_sala}}</h2>
         <h6 id="valor-sala">R${{sala.valor_sala}}</h6>
     </div>
+
     <div class="buttons">
         <button id="tail-button"class="btn btn-primary btn-lg" data-url="{% url "update_balance" %}">
             Coroa
