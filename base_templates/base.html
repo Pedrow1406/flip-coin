@@ -23,12 +23,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            {% if user %}
+            {% if user_logged %}
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page">{{user.username}}</a>
+                <a class="nav-link active" id='username' aria-current="page">{{user_logged.username}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link">Saldo: R${{user.saldo}}</a>
+                <a class="nav-link" id='saldo'>Saldo: R${{user_logged.saldo}}</a>
               </li>
             {% endif %}
           </ul>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'head' %}
+<link rel="stylesheet" href="{% static "css/coin_style.css" %}">
+{% endblock 'head' %}
+{% block 'content' %}
+<div class="container">
+    
+    <div class="coin" id="coin">
+        <div class="heads">
+            <img src="{% static "img/Coin-Head.png" %}">
+        </div>
+        <div class="tails">
+            <img
+            src="{% static "img/dollar.png" %}">
+        </div>
+    </div>
+    <div class="stats">
+        <h2 id='nome-sala'>{{sala.nome_sala}}</h2>
+        <h6 id="valor-sala">R${{sala.valor_sala}}</h6>
+    </div>
+    <div class="buttons">
+        <button id="tail-button"class="btn btn-primary btn-lg" data-url="{% url "update_balance" %}">
+            Coroa
+        </button>
+        <button id="head-button"class="btn btn-dark btn-lg" data-url="{% url "get_data" sala.id %}">
+            Cara
+        </button>
+    </div>
+</div>
+<script src="{% static "js/scriptsRoom.js" %}"></script>
+{% endblock 'content' %}

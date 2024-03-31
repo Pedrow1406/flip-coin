@@ -22,7 +22,8 @@ def login(request):
 def room_listing(request):
     user_session = request.session.get('user')
     if user_session:
-        user = Users.objects.get(id=user_session)
+        user_logged = Users.objects.get(id=user_session)
+        print(user_logged, user_logged.saldo)
         todas_salas = Salas.objects.all()
         images = ['img/rooms/PHP-Logo.png',
                         'img/rooms/C-Logo.png',
@@ -33,5 +34,38 @@ def room_listing(request):
                         'img/rooms/Java-Logo.webp',
                         'img/rooms/Python-Logo.webp',]
         images_rooms = zip(todas_salas, images)
-        return render(request, 'room_listing.html', context={'images_rooms': images_rooms,'list':True, 'locked':True, 'user':user})
+        return render(request, 'room_listing.html', context={'images_rooms': images_rooms,'list':True, 'locked':True, 'user_logged':user_logged})
     return redirect('login')
+
+def room(request, id):
+    user_session = request.session.get('user')
+    if user_session:
+        user_logged = Users.objects.get(id=user_session)
+    sala = Salas.objects.get(id=id)
+    return render(request, 'room.html', context={'user_logged':user_logged, 'sala': sala})
+
+def get_data(request, id):
+    user_session = request.session.get('user')
+    if user_session:
+        user = Users.objects.get(id=user_session)
+        sala = Salas.objects.get(id=id)
+        sala_dict = {
+            'id': sala.id,
+            'valor_sala': sala.valor_sala,
+        }
+        user_dict = {
+            'id': user.id,
+            'saldo':user.saldo
+        }
+        sala_user_dict = {'sala':sala_dict, 'user':user_dict}
+        return JsonResponse(sala_user_dict)
+
+def update_balance(request):
+    user_session = request.session.get('user')
+    if user_session:
+        data = json.loads(request.body.decode())
+        saldo = data['saldo']
+        user = Users.objects.get(id=user_session)
+        user.saldo = saldo
+        user.save()
+        return JsonResponse(data)

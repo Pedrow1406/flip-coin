@@ -50,3 +50,7 @@
 .opacity{
     opacity: 1;
 }
+.btn-join{
+    position: relative;
+    z-index: 2;
+}
