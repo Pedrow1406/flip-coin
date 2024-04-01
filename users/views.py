@@ -37,6 +37,7 @@ def room_listing(request):
         return render(request, 'room_listing.html', context={'images_rooms': images_rooms,'list':True, 'locked':True, 'user_logged':user_logged})
     return redirect('login')
 
+@require_http_methods(['GET'])
 def room(request, id):
     user_session = request.session.get('user')
     if user_session:
@@ -44,6 +45,7 @@ def room(request, id):
     sala = Salas.objects.get(id=id)
     return render(request, 'room.html', context={'user_logged':user_logged, 'sala': sala})
 
+@require_http_methods(['GET'])
 def get_data(request, id):
     user_session = request.session.get('user')
     if user_session:
@@ -59,7 +61,8 @@ def get_data(request, id):
         }
         sala_user_dict = {'sala':sala_dict, 'user':user_dict}
         return JsonResponse(sala_user_dict)
-
+    
+@require_http_methods(['PATCH'])
 def update_balance(request):
     user_session = request.session.get('user')
     if user_session:
